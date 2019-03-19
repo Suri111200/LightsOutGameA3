@@ -4,12 +4,6 @@ public class GameModel {
 	private int width;
 	private int height;
 
-	
-	hi
-
-	private int height;
-	private int width;
-
 	private boolean[][]gameBoard;
 
 	public GameModel(int width, int height){
