@@ -187,6 +187,35 @@ public class Solution {
         return true;
     }
 
+    /**
+    * returns <b>true</b> if the solution is completely 
+    * specified and is indeed working, that is, if it 
+    * will bring a board of the specified dimensions 
+    * from being  entirely ``off'' to being  entirely 
+    * ``on''.
+    *
+    * @return
+    *  true if the solution is completely specified
+    * and works
+    */
+    public boolean isSuccessful(GameModel model){
+
+        if(currentIndex < model.getWidth()*model.getHeight()) {
+            System.out.println("Board not finished");
+            return false;
+        }
+
+        for(int i = 0; i < model.getHeight() ; i++){
+            for(int j = 0; j < model.getWidth(); j++) {
+                if(!oddNeighborhood(i,j)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 
    /**
     * this method ensure that add <b>nextValue</b> at the
@@ -209,6 +238,47 @@ public class Solution {
 
         int i = currentIndex/width;
         int j = currentIndex%width;
+        boolean before = board[i][j];
+        boolean possible = true;
+
+        board[i][j] = nextValue;
+        
+        if((i > 0) && (!oddNeighborhood(i-1,j))){
+            possible = false;
+        }
+        if(possible && (i == (height-1))) {
+            if((j > 0) && (!oddNeighborhood(i,j-1))){
+                possible = false;
+            }
+            if(possible && (j == (width-1))&& (!oddNeighborhood(i,j))){
+                possible = false;            
+            }
+        }
+        board[i][j] = before;
+        return possible;
+    }
+
+    /**
+    * this method ensure that add <b>nextValue</b> at the
+    * currentIndex does not make the current solution
+    * impossible. It assumes that the Solution was
+    * built with a series of setNext on which 
+    * stillPossible was always true. Configured for GameModel
+    * @param nextValue
+    *         The boolean value to add at currentIndex
+    * @return true if the board is not known to be
+    * impossible (which does not mean that the board
+    * is possible!)
+    */
+    public boolean stillPossible(boolean nextValue, GameModel model) {
+
+        if(currentIndex >= model.getWidth()*model.getHeight()) {
+            System.out.println("Board already full");
+            return false;
+        }
+
+        int i = currentIndex/model.getWidth();
+        int j = currentIndex%model.getWidth();
         boolean before = board[i][j];
         boolean possible = true;
 
@@ -292,6 +362,65 @@ public class Solution {
     }
 
     /**
+    * this method attempts to finish the board. 
+    * It assumes that the Solution was
+    * built with a series of setNext on which 
+    * stillPossible was always true. It cannot
+    * be called if the board can be extended 
+    * with both true and false and still be 
+    * possible.
+    *
+    * @return true if the board can be finished.
+    * the board is also completed
+    */
+    public boolean finish(GameModel model){
+
+        int i = currentIndex/model.getWidth();
+        int j = currentIndex%model.getWidth();
+/*
+        if(i == 0 && height > 1) {
+            System.out.println("First line incomplete, can't proceed");
+            return false;
+        }
+*/
+        while(currentIndex < model.getHeight()*model.getWidth()) {
+            if(i < model.getHeight() - 1 ) {
+                setNext(!oddNeighborhood(i-1,j));
+                i = currentIndex/model.getWidth();
+                j = currentIndex%model.getWidth();
+            } else { //last raw
+                if(j == 0){
+                    setNext(!oddNeighborhood(i-1,j));
+                } else {
+                   if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1)){
+                     return false;
+                   }
+                   setNext(!oddNeighborhood(i,j-1));
+                } 
+                i = currentIndex/model.getWidth();
+                j = currentIndex%model.getWidth();
+            }
+        }
+        if(!oddNeighborhood(model.getWidth()-1,model.getWidth()-1)){
+            return false;
+        }
+        // here we should return true because we could
+        // successfully finish the board. However, as a
+        // precaution, if someone called the method on
+        // a board that was unfinishable before calling
+        // the method, we do a complete check
+        
+        if(!isSuccessful()) {
+            System.out.println("Warning, method called incorrectly");
+            return false;
+        }
+       
+        return true;
+
+    }
+
+
+    /**
      * checks if board[i][j] and its neighborhood
      * have an odd number of values ``true''
      */
@@ -319,6 +448,15 @@ public class Solution {
             total++;
         }
         return (total%2)== 1 ;                
+    }
+
+    /**
+     * 
+     * 
+     */
+    public int getSize() 
+    {
+        return currentIndex;
     }
 
     /**

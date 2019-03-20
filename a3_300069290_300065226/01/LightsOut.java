@@ -92,6 +92,73 @@ public class LightsOut {
         return solutions;
     }
 
+    /**
+     * The modified method (GameModel version) <b>solve</b> finds all the 
+     * solutions to the <b>Lights Out</b> game 
+     * for an initially completely ``off'' board 
+     * of size <b>widthxheight</b>, using a  
+     * Breadth-First Search algorithm. 
+     *
+     * It returns an <b>ArrayList&lt;Solution&gt;</b> 
+     * containing all the valid solutions to the 
+     * problem.
+     *
+     * This version does not continue exploring a 
+     * partial solution that is known to be
+     * impossible. It will also attempt to complete
+     * a solution as soon as possible
+     *
+     * During the computation of the solution, the 
+     * method prints out a message each time a new 
+     * solution  is found, along with the total time 
+     * it took (in milliseconds) to find that solution.
+     *
+     * @param width
+     *  the width of the board
+     * @param height
+     *  the height of the board
+     * @return
+     *  an instance of <b>ArrayList&lt;Solution&gt;</b>
+     * containing all the solutions
+     */
+    public static ArrayList<Solution> solve(GameModel model){
+
+        SolutionQueue q  = new ArrayListSolutionQueue();
+        ArrayList<Solution> solutions  = new ArrayList<Solution>();
+
+        q.enqueue(new Solution(model.getWidth(), model.getHeight()));
+        long start = System.currentTimeMillis();
+        while(!q.isEmpty()){
+            Solution s  = q.dequeue();
+            if(s.isReady()){
+                // by construction, it is successfull
+                System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
+                solutions.add(s);
+            } else {
+                boolean withTrue = s.stillPossible(true);
+                boolean withFalse = s.stillPossible(false);
+                if(withTrue && withFalse) {
+                    Solution s2 = new Solution(s);
+                    s.setNext(true);
+                    q.enqueue(s);
+                    s2.setNext(false);
+                    q.enqueue(s2);
+                } else if (withTrue) {
+                    s.setNext(true);
+                    if(s.finish()){
+                        q.enqueue(s);
+                    }                
+                } else if (withFalse) {
+                    s.setNext(false);
+                    if( s.finish()){
+                        q.enqueue(s); 
+                    }               
+                }
+            }
+        }
+        return solutions;
+    }
+
 
     /**
      * <b>main</b> method  calls the method <b>solve</b> 

@@ -10,7 +10,7 @@ public class GameModel {
 		this.width = width;
 		this.height = height;
 
-		gameBoard = new boolean[height][width]
+		gameBoard = new boolean[height][width];
 	}
 
 	public int getHeight(){
