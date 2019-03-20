@@ -272,31 +272,24 @@ public class Solution {
     */
     public boolean stillPossible(boolean nextValue, GameModel model) {
 
+        //Error handling + decreases processing time by automatically returning false if board is full
+
         if(currentIndex >= model.getWidth()*model.getHeight()) {
             System.out.println("Board already full");
             return false;
         }
 
-        int i = currentIndex/model.getWidth();
-        int j = currentIndex%model.getWidth();
-        boolean before = board[i][j];
-        boolean possible = true;
+        //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
 
-        board[i][j] = nextValue;
-        
-        if((i > 0) && (!oddNeighborhood(i-1,j))){
-            possible = false;
-        }
-        if(possible && (i == (height-1))) {
-            if((j > 0) && (!oddNeighborhood(i,j-1))){
-                possible = false;
-            }
-            if(possible && (j == (width-1))&& (!oddNeighborhood(i,j))){
-                possible = false;            
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
             }
         }
-        board[i][j] = before;
-        return possible;
+
+        //Perform stillPossible with only boolean parameter (line ~232)
+        return duplicate.stillPossible(nextValue);
     }
 
 
