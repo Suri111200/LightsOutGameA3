@@ -26,15 +26,15 @@ public class GameModel {
 
 	public boolean isON(int i, int j){
 
-		return gameBoard[j][i];
+		return gameBoard[i][j];
 	}
 
 	public void reset(){
-		gameBoard = new boolean[width][height];
+		gameBoard = new boolean[height][width];
 	}
 
 	public void set(int i, int j, boolean value){
-		gameBoard[i][j] = value;
+		gameBoard[j][i] = value;
 	}
 
 	public String toString(){
