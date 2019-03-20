@@ -273,14 +273,13 @@ public class Solution {
     public boolean stillPossible(boolean nextValue, GameModel model) {
 
         //Error handling + decreases processing time by automatically returning false if board is full
-
         if(currentIndex >= model.getWidth()*model.getHeight()) {
             System.out.println("Board already full");
             return false;
         }
 
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(this);
+        Solution duplicate = new Solution(model.getWidth(), model.getHeight());
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
@@ -305,7 +304,7 @@ public class Solution {
     * @return true if the board can be finished.
     * the board is also completed
     */
-    public boolean finish(){
+    public boolean finish() {
 
 
         int i = currentIndex/width;
