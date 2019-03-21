@@ -368,7 +368,7 @@ public class Solution {
     */
     public boolean finish(GameModel model){
 
-               //Create a duplicate Solution, copy all information onto duplicate board
+        //Create a duplicate Solution, copy all information onto duplicate board
         Solution duplicate = new Solution(this);
 
         for (int i=0; i< model.getHeight(); i++){
@@ -420,6 +420,7 @@ public class Solution {
     public int getSize() 
     {
         //Returns number of inputs until solution is achieved.
+        //
         return numLeft;
     }
 
