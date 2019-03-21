@@ -34,6 +34,8 @@ public class Solution {
      */
     private int currentIndex;
 
+    private int numLeft;
+
 
 
     /**
@@ -70,6 +72,8 @@ public class Solution {
         this.width = other.width;
         this.height = other.height;
         this.currentIndex = other.currentIndex;
+
+        this.numLeft = other.numLeft;
 
         board = new boolean[height][width];
 
@@ -187,6 +191,33 @@ public class Solution {
         return true;
     }
 
+    /**
+    * returns <b>true</b> if the solution is completely 
+    * specified and is indeed working, that is, if it 
+    * will bring a board of the specified dimensions 
+    * from being  entirely ``off'' to being  entirely 
+    * ``on''.
+    *
+    * @return
+    *  true if the solution is completely specified
+    * and works
+    */
+    public boolean isSuccessful(GameModel model){
+
+
+
+        //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
+            }
+        }
+
+        //Perform isSuccessful with 0 parameters.
+        return duplicate.isSuccessful();
+    ]
 
    /**
     * this method ensure that add <b>nextValue</b> at the
@@ -229,6 +260,35 @@ public class Solution {
         return possible;
     }
 
+    /**
+    * this method ensure that add <b>nextValue</b> at the
+    * currentIndex does not make the current solution
+    * impossible. It assumes that the Solution was
+    * built with a series of setNext on which 
+    * stillPossible was always true. Configured for GameModel
+    * @param nextValue
+    *         The boolean value to add at currentIndex
+    * @return true if the board is not known to be
+    * impossible (which does not mean that the board
+    * is possible!)
+    */
+    public boolean stillPossible(boolean nextValue, GameModel model) {
+
+
+
+        //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
+            }
+        }
+
+        //Perform stillPossible with only boolean parameter (line ~232)
+        return duplicate.stillPossible(nextValue);
+    }
+
 
     /**
     * this method attempts to finish the board. 
@@ -258,16 +318,19 @@ public class Solution {
         while(currentIndex < height*width) {
             if(i < height - 1 ) {
                 setNext(!oddNeighborhood(i-1,j));
+                numLeft++;
                 i = currentIndex/width;
                 j = currentIndex%width;
             } else { //last raw
                 if(j == 0){
                     setNext(!oddNeighborhood(i-1,j));
+                    numLeft++;
                 } else {
                    if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1)){
                      return false;
                    }
                    setNext(!oddNeighborhood(i,j-1));
+                   numLeft++;
                 } 
                 i = currentIndex/width;
                 j = currentIndex%width;
@@ -290,6 +353,35 @@ public class Solution {
         return true;
 
     }
+
+    /**
+    * this method attempts to finish the board. 
+    * It assumes that the Solution was
+    * built with a series of setNext on which 
+    * stillPossible was always true. It cannot
+    * be called if the board can be extended 
+    * with both true and false and still be 
+    * possible.
+    *
+    * @return true if the board can be finished.
+    * the board is also completed
+    */
+    public boolean finish(GameModel model){
+
+        //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
+            }
+        }
+
+        //Perform finish with 0 parameters.
+        return duplicate.finish();
+
+    }
+
 
     /**
      * checks if board[i][j] and its neighborhood
@@ -319,6 +411,17 @@ public class Solution {
             total++;
         }
         return (total%2)== 1 ;                
+    }
+
+    /**
+     * 
+     * 
+     */
+    public int getSize() 
+    {
+        //Returns number of inputs until solution is achieved.
+        //
+        return numLeft;
     }
 
     /**
