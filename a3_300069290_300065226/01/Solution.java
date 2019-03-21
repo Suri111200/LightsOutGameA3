@@ -211,7 +211,7 @@ public class Solution {
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
-                duplicate.board[i][j] = model.isON[i][j];
+                duplicate.board[i][j] = model.isON(i,j);
             }
         }
 
@@ -281,7 +281,7 @@ public class Solution {
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
-                duplicate.board[i][j] = model.isON[i][j];
+                duplicate.board[i][j] = model.isON(i,j);
             }
         }
 
@@ -373,7 +373,7 @@ public class Solution {
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
-                duplicate.board[i][j] = model.isON[i][j];
+                duplicate.board[i][j] = model.isON(i,j);
             }
         }
 
