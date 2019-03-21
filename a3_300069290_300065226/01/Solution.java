@@ -217,7 +217,7 @@ public class Solution {
 
         //Perform isSuccessful with 0 parameters.
         return duplicate.isSuccessful();
-    ]
+    }
 
    /**
     * this method ensure that add <b>nextValue</b> at the

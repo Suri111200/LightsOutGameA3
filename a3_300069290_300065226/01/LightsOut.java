@@ -56,7 +56,7 @@ public class LightsOut {
      */
     public static ArrayList<Solution> solve(int width, int height){
 
-        SolutionQueue q  = new ArrayListSolutionQueue();
+        Queue<Solution> q = new QueueImplementation<Solution>();
         ArrayList<Solution> solutions  = new ArrayList<Solution>();
 
         q.enqueue(new Solution(width,height));
@@ -123,42 +123,30 @@ public class LightsOut {
      */
     public static ArrayList<Solution> solve(GameModel model){
 
-        SolutionQueue q  = new ArrayListSolutionQueue();
-        ArrayList<Solution> solutions  = new ArrayList<Solution>();
-
-        q.enqueue(new Solution(model.getWidth(), model.getHeight()));
-        long start = System.currentTimeMillis();
-        while(!q.isEmpty()){
-            Solution s  = q.dequeue();
-            if(s.isReady()){
-                // by construction, it is successfull
-                System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
-                solutions.add(s);
-            } else {
-                boolean withTrue = s.stillPossible(true);
-                boolean withFalse = s.stillPossible(false);
-                if(withTrue && withFalse) {
-                    Solution s2 = new Solution(s);
-                    s.setNext(true);
-                    q.enqueue(s);
-                    s2.setNext(false);
-                    q.enqueue(s2);
-                } else if (withTrue) {
-                    s.setNext(true);
-                    if(s.finish()){
-                        q.enqueue(s);
-                    }                
-                } else if (withFalse) {
-                    s.setNext(false);
-                    if( s.finish()){
-                        q.enqueue(s); 
-                    }               
-                }
-            }
-        }
-        return solutions;
+        return solve(model.getWidth(), model.getHeight());
     }
 
+
+    public Solution solveShortest (GameModel model) 
+    {
+        ArrayList<Solution> allSolutions = new ArrayList<Solution>();
+        allSolutions = solve(model);
+
+        int temp = 1000;
+        int index = 0;
+
+        for (int i = 0; i < allSolutions.size(); i++)
+        {
+            if (temp > allSolutions.get(i).getSize())
+            {
+                temp = allSolutions.get(i).getSize();
+                index = i;
+            }
+        }
+
+        return (new Solution(allSolutions.get(index)));
+
+    }
 
     /**
      * <b>main</b> method  calls the method <b>solve</b> 
