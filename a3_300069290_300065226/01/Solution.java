@@ -34,6 +34,8 @@ public class Solution {
      */
     private int currentIndex;
 
+    private int numLeft;
+
 
 
     /**
@@ -70,6 +72,8 @@ public class Solution {
         this.width = other.width;
         this.height = other.height;
         this.currentIndex = other.currentIndex;
+
+        this.numLeft = other.numLeft;
 
         board = new boolean[height][width];
 
@@ -314,16 +318,19 @@ public class Solution {
         while(currentIndex < height*width) {
             if(i < height - 1 ) {
                 setNext(!oddNeighborhood(i-1,j));
+                numLeft++;
                 i = currentIndex/width;
                 j = currentIndex%width;
             } else { //last raw
                 if(j == 0){
                     setNext(!oddNeighborhood(i-1,j));
+                    numLeft++;
                 } else {
                    if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1)){
                      return false;
                    }
                    setNext(!oddNeighborhood(i,j-1));
+                   numLeft++;
                 } 
                 i = currentIndex/width;
                 j = currentIndex%width;
@@ -412,7 +419,8 @@ public class Solution {
      */
     public int getSize() 
     {
-        //return currentIndex;
+        //Returns number of inputs until solution is achieved.
+        return numLeft;
     }
 
     /**
