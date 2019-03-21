@@ -127,7 +127,7 @@ public class LightsOut {
     }
 
 
-    public Solution solveShortest (GameModel model) 
+    public static Solution solveShortest (GameModel model) 
     {
         ArrayList<Solution> allSolutions = new ArrayList<Solution>();
         allSolutions = solve(model);
