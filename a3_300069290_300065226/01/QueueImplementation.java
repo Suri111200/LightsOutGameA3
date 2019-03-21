@@ -9,6 +9,7 @@ public class QueueImplementation<E> implements Queue<E> {
 	public QueueImplementation(){
 
 		queue = new ArrayList<E>();
+
 	}
 
 	//enqueue: creates new temp array, loads all data onto it
