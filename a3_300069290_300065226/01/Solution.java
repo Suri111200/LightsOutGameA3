@@ -200,22 +200,20 @@ public class Solution {
     */
     public boolean isSuccessful(GameModel model){
 
-        if(currentIndex < model.getWidth()*model.getHeight()) {
-            System.out.println("Board not finished");
-            return false;
-        }
 
-        for(int i = 0; i < model.getHeight() ; i++){
-            for(int j = 0; j < model.getWidth(); j++) {
-                if(!oddNeighborhood(i,j)){
-                    return false;
-                }
+
+        //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
             }
         }
-        return true;
-    }
 
-
+        //Perform isSuccessful with 0 parameters.
+        return duplicate.isSuccessful();
+    ]
 
    /**
     * this method ensure that add <b>nextValue</b> at the
@@ -272,14 +270,10 @@ public class Solution {
     */
     public boolean stillPossible(boolean nextValue, GameModel model) {
 
-        //Error handling + decreases processing time by automatically returning false if board is full
-        if(currentIndex >= model.getWidth()*model.getHeight()) {
-            System.out.println("Board already full");
-            return false;
-        }
+
 
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(model.getWidth(), model.getHeight());
+        Solution duplicate = new Solution(this);
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
@@ -304,7 +298,7 @@ public class Solution {
     * @return true if the board can be finished.
     * the board is also completed
     */
-    public boolean finish() {
+    public boolean finish(){
 
 
         int i = currentIndex/width;
@@ -367,47 +361,17 @@ public class Solution {
     */
     public boolean finish(GameModel model){
 
-        int i = currentIndex/model.getWidth();
-        int j = currentIndex%model.getWidth();
-/*
-        if(i == 0 && height > 1) {
-            System.out.println("First line incomplete, can't proceed");
-            return false;
-        }
-*/
-        while(currentIndex < model.getHeight()*model.getWidth()) {
-            if(i < model.getHeight() - 1 ) {
-                setNext(!oddNeighborhood(i-1,j));
-                i = currentIndex/model.getWidth();
-                j = currentIndex%model.getWidth();
-            } else { //last raw
-                if(j == 0){
-                    setNext(!oddNeighborhood(i-1,j));
-                } else {
-                   if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1)){
-                     return false;
-                   }
-                   setNext(!oddNeighborhood(i,j-1));
-                } 
-                i = currentIndex/model.getWidth();
-                j = currentIndex%model.getWidth();
+               //Create a duplicate Solution, copy all information onto duplicate board
+        Solution duplicate = new Solution(this);
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                duplicate.board[i][j] = model.isON[i][j];
             }
         }
-        if(!oddNeighborhood(model.getWidth()-1,model.getWidth()-1)){
-            return false;
-        }
-        // here we should return true because we could
-        // successfully finish the board. However, as a
-        // precaution, if someone called the method on
-        // a board that was unfinishable before calling
-        // the method, we do a complete check
-        
-        if(!isSuccessful()) {
-            System.out.println("Warning, method called incorrectly");
-            return false;
-        }
-       
-        return true;
+
+        //Perform finish with 0 parameters.
+        return duplicate.finish();
 
     }
 
@@ -448,7 +412,7 @@ public class Solution {
      */
     public int getSize() 
     {
-        return currentIndex;
+        //return currentIndex;
     }
 
     /**
