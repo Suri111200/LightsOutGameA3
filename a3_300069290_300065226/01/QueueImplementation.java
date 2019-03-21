@@ -6,7 +6,7 @@ public class QueueImplementation<E> implements Queue<E> {
 
 	public QueueImplementation(){
 
-		queue = new Queue[];
+		queue = new Queue[0];
 	}
 
 	//enqueue: creates new temp array, loads all data onto it
