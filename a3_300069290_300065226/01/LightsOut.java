@@ -130,7 +130,7 @@ public class LightsOut {
 
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
-                toAdd.board[i][j] = model.isON(i,j);
+                toAdd.setNext(model.isON(i,j));
             }
         }
 
@@ -187,7 +187,6 @@ public class LightsOut {
         }
 
         return (new Solution(allSolutions.get(index)));
-
     }
 
     /**
