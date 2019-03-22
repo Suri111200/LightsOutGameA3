@@ -123,7 +123,49 @@ public class LightsOut {
      */
     public static ArrayList<Solution> solve(GameModel model){
 
-        return solve(model.getWidth(), model.getHeight());
+        Queue<Solution> q = new QueueImplementation<Solution>();
+        ArrayList<Solution> solutions  = new ArrayList<Solution>();
+
+        Solution toAdd = new Solution (model.getWidth(), model.getHeight());
+
+        for (int i=0; i< model.getHeight(); i++){
+            for(int j=0; j< model.getWidth();j++){
+                toAdd.board[i][j] = model.isON(i,j);
+            }
+        }
+
+        q.enqueue(toAdd);
+
+        long start = System.currentTimeMillis();
+        while(!q.isEmpty()){
+            Solution s  = q.dequeue();
+            if(s.isReady()){
+                // by construction, it is successfull
+                System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
+                solutions.add(s);
+            } else {
+                boolean withTrue = s.stillPossible(true);
+                boolean withFalse = s.stillPossible(false);
+                if(withTrue && withFalse) {
+                    Solution s2 = new Solution(s);
+                    s.setNext(true);
+                    q.enqueue(s);
+                    s2.setNext(false);
+                    q.enqueue(s2);
+                } else if (withTrue) {
+                    s.setNext(true);
+                    if(s.finish()){
+                        q.enqueue(s);
+                    }                
+                } else if (withFalse) {
+                    s.setNext(false);
+                    if( s.finish()){
+                        q.enqueue(s); 
+                    }               
+                }
+            }
+        }
+        return solutions;
     }
 
 
