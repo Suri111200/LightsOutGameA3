@@ -134,6 +134,8 @@ public class LightsOut {
             }
         }
 
+        System.out.println (toAdd);
+
         q.enqueue(toAdd);
 
         long start = System.currentTimeMillis();

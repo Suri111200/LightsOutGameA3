@@ -276,9 +276,7 @@ public class Solution {
     * is possible!)
     */
     public boolean stillPossible(boolean nextValue, GameModel model) {
-
-
-
+        
         //Create a duplicate Solution, copy all information onto duplicate board
         Solution duplicate = new Solution(this);
 
@@ -379,7 +377,6 @@ public class Solution {
 
         //Perform finish with 0 parameters.
         return duplicate.finish();
-
     }
 
 
