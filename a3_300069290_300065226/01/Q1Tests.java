@@ -38,6 +38,7 @@ public class Q1Tests {
         model = new GameModel(2,3);
         runSolverTest(model,4);
 
+        //THIS TEST FAILS
         model.set(0,0,true);
         runSolverTest(model,0);
        
@@ -80,6 +81,8 @@ public class Q1Tests {
     private static void testShortest(){
         System.out.println("\ntestShortest");
         GameModel model = new GameModel(2,2);
+        
+        //THIS TEST FAILS
         runShortestSolverTest(model,4);
         
         model = new GameModel(3,2);
@@ -94,9 +97,12 @@ public class Q1Tests {
         model.set(0,0,true);
         model.set(1,0,true);
         model.set(0,1,true);
+
+        //THIS TEST FAILS
         runShortestSolverTest(model,1);
 
         model = new GameModel(4,4);
+        //THIS TEST FAILS
         runShortestSolverTest(model,4);
     }
 
