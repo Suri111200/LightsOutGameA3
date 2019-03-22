@@ -23,8 +23,9 @@ public class Q1Tests {
     private static void testSolver(){
 
         System.out.println("\ntestSolver");
-
+        
         GameModel model = new GameModel(2,2);
+    /*    
         runSolverTest(model,1);
 
         model.set(0,1,true);
@@ -34,14 +35,15 @@ public class Q1Tests {
         model.set(1,0,true);
         model.set(1,1,true);
         runSolverTest(model,1);
-
+    */
         model = new GameModel(2,3);
+        //THIS TEST FAILS
         runSolverTest(model,4);
 
         //THIS TEST FAILS
         model.set(0,0,true);
         runSolverTest(model,0);
-       
+    /*  
         model = new GameModel(3,3);
         runSolverTest(model,1);
 
@@ -49,6 +51,7 @@ public class Q1Tests {
         model.set(1,1,true);
         model.set(2,2,true);
         runSolverTest(model,1);
+    */
    }
 
 
