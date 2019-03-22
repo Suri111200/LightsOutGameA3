@@ -73,7 +73,7 @@ public class Solution {
         this.height = other.height;
         this.currentIndex = other.currentIndex;
 
-        //this.numLeft = other.numLeft;
+        this.numLeft = other.numLeft;
 
         board = new boolean[height][width];
 
