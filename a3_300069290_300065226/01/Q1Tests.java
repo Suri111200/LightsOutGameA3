@@ -37,7 +37,8 @@ public class Q1Tests {
         runSolverTest(model,1);
 
         model = new GameModel(2,3);
-        //THIS TEST FAILS
+
+        //Friday 21:28 THIS TEST no longer fails. 
         runSolverTest(model,4);
 
         //THIS TEST FAILS
@@ -84,8 +85,7 @@ public class Q1Tests {
     private static void testShortest(){
         System.out.println("\ntestShortest");
         GameModel model = new GameModel(2,2);
-        
-        //THIS TEST FAILS
+
         runShortestSolverTest(model,4);
         
         model = new GameModel(3,2);
@@ -97,15 +97,16 @@ public class Q1Tests {
         runShortestSolverTest(model,2);
 
         model.reset();
+
         model.set(0,0,true);
         model.set(1,0,true);
         model.set(0,1,true);
 
-        //THIS TEST FAILS
+        //Only test that fails
         runShortestSolverTest(model,1);
 
         model = new GameModel(4,4);
-        //THIS TEST FAILS
+
         runShortestSolverTest(model,4);
     }
 

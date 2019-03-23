@@ -128,38 +128,50 @@ public class LightsOut {
 
         Solution toAdd = new Solution (model.getWidth(), model.getHeight());
 
-        /*for (int i=0; i< model.getHeight(); i++){
+        for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
-                toAdd.setNext(model.isON(i,j));
+                toAdd.setNext(model.isON(i,j),false);
+                //System.out.println(model.isON(i,j));
             }
-        }*/
+        }
 
         //System.out.println (toAdd);
+        //System.out.println("\n"+toAdd+"\nUR MOM");
+
+        //Friday 20:44, Everything up until here should be fine. - Soorya
+        //Friday 21:10, Seems as though nothing between ~lines 150 and 175 is executed.
 
         q.enqueue(toAdd);
 
         long start = System.currentTimeMillis();
         while(!q.isEmpty()){
             Solution s  = q.dequeue();
-            if(s.isReady()){
-                // by construction, it is successfull
+            
+            if(s.isReady()&& s.isSuccessful()){
+                //System.out.println("I think I'm ready!");
+                // by construction, it is successfull - The profs
+                // no it isn't. -Soorya
                 System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
                 solutions.add(s);
             } else {
                 boolean withTrue = s.stillPossible(true);
                 boolean withFalse = s.stillPossible(false);
+                //System.out.println("withtrue: "+withTrue+ "\n withfalse: "+withFalse);
                 if(withTrue && withFalse) {
+                    //System.out.println("Still possible, both true and false.");
                     Solution s2 = new Solution(s);
                     s.setNext(true);
                     q.enqueue(s);
                     s2.setNext(false);
                     q.enqueue(s2);
                 } else if (withTrue) {
+                    //System.out.println("Still possible, only true");
                     s.setNext(true);
                     if(s.finish()){
                         q.enqueue(s);
                     }                
                 } else if (withFalse) {
+                    //System.out.println("Still possible, only false");
                     s.setNext(false);
                     if( s.finish()){
                         q.enqueue(s); 
@@ -176,19 +188,27 @@ public class LightsOut {
         ArrayList<Solution> allSolutions = new ArrayList<Solution>();
         allSolutions = solve(model);
 
+        //System.out.println("ur mom");
+        //System.out.println(allSolutions);
+        //System.out.println(allSolutions.size());
+        //System.out.println("ur dad");
+
         int temp = 1000;
         int index = 0;
 
         for (int i = 0; i < allSolutions.size(); i++)
         {
+            //System.out.println(allSolutions.get(i));
             if (temp > allSolutions.get(i).getSize())
             {
+                //System.out.println("this is currently the shortest solution.");
                 temp = allSolutions.get(i).getSize();
+                //System.out.println(temp);
                 index = i;
             }
         }
 
-        return (new Solution(allSolutions.get(index)));
+        return ((allSolutions.get(index)));
     }
 
     /**
