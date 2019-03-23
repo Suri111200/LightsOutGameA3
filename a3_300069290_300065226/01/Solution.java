@@ -125,17 +125,13 @@ public class Solution {
     }
 
     //A stupid experiment -- Friday 20:35
+    //This experiment works -- Saturday 03:58
 
     public void setNext(boolean nextValue, boolean incrementSetNext){
         if (incrementSetNext){
             setNext(nextValue);
         }else{
-            if(currentIndex >= width*height) {
-                System.out.println("Board already full");
-                return;
-                }
             board[currentIndex/width][currentIndex%width] = nextValue;
-        
         }
     }
 
@@ -173,6 +169,10 @@ public class Solution {
             System.out.println("Board already full");
             return;
         }
+        //Saturday, 03:55 -- Added this if statement
+        if (board[currentIndex/width][currentIndex%width] == true && nextValue == false)
+            numLeft++;
+
         board[currentIndex/width][currentIndex%width] = nextValue;
         currentIndex++;
         //System.out.println(currentIndex);
