@@ -124,6 +124,20 @@ public class Solution {
 
     }
 
+    //A stupid experiment -- Friday 20:35
+
+    public void setNext(boolean nextValue, boolean incrementSetNext){
+        if (incrementSetNext){
+            setNext(nextValue);
+        }else{
+            if(currentIndex >= width*height) {
+                System.out.println("Board already full");
+                return;
+                }
+            board[currentIndex/width][currentIndex%width] = nextValue;
+        
+        }
+    }
 
     /** 
     * returns <b>true</b> if the solution 
@@ -161,6 +175,7 @@ public class Solution {
         }
         board[currentIndex/width][currentIndex%width] = nextValue;
         currentIndex++;
+        //System.out.println(currentIndex);
 
         if (nextValue == true)
             numLeft++;
