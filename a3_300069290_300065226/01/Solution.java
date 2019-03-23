@@ -444,5 +444,10 @@ public class Solution {
         return out.toString();
     }
 
+    public boolean get(int i, int j)
+    {
+        return this.board[i][j] = true;
+    }
+
 }
 

@@ -56,4 +56,14 @@ public class GameModel {
 
         return toreturn;
 	}
+
+	public void click (int i, int j) 
+	{
+		if (this.board[i][j] == true)
+			this.board[i][j] = false;
+		else
+			this.board[i][j] = true;
+
+		
+	}
 }
