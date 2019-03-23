@@ -17,6 +17,10 @@ import java.awt.event.ItemEvent;
 public class GameController implements ActionListener, ItemListener {
 
     // YOUR VARIABLES HERE
+    private GameModel model;
+
+    private View [] views;
+    private int numberOfViews;
 
     /**
      * Constructor used for initializing the controller. It creates the game's view 
@@ -30,8 +34,13 @@ public class GameController implements ActionListener, ItemListener {
     public GameController(int width, int height) {
 
         // YOUR CODE HERE
+        views = new View[2];
+        numberOfViews = 0;
+        model = new GameModel(width, height);
+        register(new GraphicalView(model, this));
+        register(new TextView(model));
+        update();
     }
-
 
     /**
      * Callback used when the user clicks a button (reset, 
@@ -44,6 +53,23 @@ public class GameController implements ActionListener, ItemListener {
     public void actionPerformed(ActionEvent e) {
         
         // YOUR CODE HERE
+
+        if (e.getActionCommand().equals("reset"))
+        {
+            model.reset();
+        }
+
+        if (e.getActionCommand().equals("random"))
+        {
+            model.randomize();
+        }
+
+        if (e.getActionCommand().equals("quit"))
+        {
+            System.exit(0);
+        }
+
+        update();
 
     }
 
@@ -58,8 +84,33 @@ public class GameController implements ActionListener, ItemListener {
     public void  itemStateChanged(ItemEvent e){
 
         // YOU CODE HERE
+        int width = (int) e.getActionCommand().charAt(0);
+        int height = (int) e.getActionCommand().charAt(1);
+
+        model.click(width, height);
+
+        update();
+
     }
 
     // YOUR OTHER METHODS HERE
+
+    public GameModel getModel() {
+        return model;
+    }
+
+    public View[] getViews() {
+        return views;
+    }
+
+    private void register(View view) {
+        views[numberOfViews] = view;
+        numberOfViews++;
+    }
+    private void update() {
+        for (int i = 0; i < numberOfViews; i++) {
+            views[i].update();
+        }
+    }
 
 }

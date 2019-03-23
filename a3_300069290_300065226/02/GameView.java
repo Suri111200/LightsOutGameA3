@@ -13,7 +13,8 @@ import javax.swing.*;
 public class GameView extends JFrame {
 
     // your variables here
-
+    private JLabel input;
+    private GameModel model;
 
     /**
      * Constructor used for initializing the Frame
@@ -27,6 +28,20 @@ public class GameView extends JFrame {
     public GameView(GameModel gameModel, GameController gameController) {
 
         // YOUR CODE HERE
+        Container cbLayOut = setLayOut(new GridLayOut(gameModel.getWidth(), gameModel.getHeight()));
+        this.model = gameModel;
+
+        for (int i = 0; i < model.getWidth(); i++)
+        {
+            for (int j = 0; j < model.getHeight(); j++)
+            {
+              JCheckBox cb = new JCheckBox;
+              cb.setSelected(false); 
+              cb.setIcon(new ImageIcon("Icons/02.png"));
+              cb.setSelectedIcon(new ImageIcon("Icons/01.png"))  
+            }
+        }
+
 
     }
 
@@ -38,7 +53,7 @@ public class GameView extends JFrame {
     public void update(){
 
         // YOUR CODE HERE
-
+        input.setText(model.toString());
     }
 
     /**
