@@ -1,4 +1,3 @@
-
 // UPDATE THIS FILE AS REQUIRED
 
 
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 /**
  * The class <b>LightsOut</b> is the
  * class that implements the method to
- * computs solutions of the Lights Out game.
+ * compute solutions of the Lights Out game.
  * It contains the main of our application.
  *
  * @author Guy-Vincent Jourdan, University of Ottawa
@@ -130,7 +129,7 @@ public class LightsOut {
         long start = System.currentTimeMillis();
         while(!q.isEmpty()){
             Solution s  = q.dequeue();
-            if(s.isReady()){
+            if(s.isReady() && s.isSuccessful(model)){
                 // by construction, it is successfull
                 System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
                 solutions.add(s);
@@ -158,79 +157,6 @@ public class LightsOut {
         }
         return solutions;
 
-    /*
-
-        Queue<Solution> q = new QueueImplementation<Solution>();
-
-        ArrayList<Solution> solutions  = new ArrayList<Solution>();
-
-        Solution toAdd = new Solution (model.getWidth(), model.getHeight());
-        
-        //Saturday 15:04 -- This code probably isn't needed
-        /*
-        for (int i=0; i< model.getHeight(); i++){
-            for(int j=0; j< model.getWidth();j++){
-                toAdd.setNext(model.isON(i,j),false);
-                //System.out.println(model.isON(i,j));
-            }
-        }
-
-        //System.out.println (toAdd);
-        //System.out.println("\n"+toAdd+"\nUR MOM");
-
-
-        q.enqueue(toAdd);
-
-        long start = System.currentTimeMillis();
-        while(!q.isEmpty()){
-            Solution s  = q.dequeue();
-            
-            if(s.isReady()){
-                //System.out.println("I think I'm ready!");
-                // by construction, it is successfull - The profs
-                // no it isn't. -Soorya
-                System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
-                solutions.add(s);
-            } else {
-                boolean withTrue = s.stillPossible(true, model);
-                boolean withFalse = s.stillPossible(false, model);
-                //System.out.println("withtrue: "+withTrue+ "\n withfalse: "+withFalse);
-                if(withTrue && withFalse) {
-                    //System.out.println("Still possible, both true and false.");
-                    Solution s2 = new Solution(s);
-                    s.setNext(true);
-                    q.enqueue(s);
-                    s2.setNext(false);
-                    q.enqueue(s2);
-                } else if (withTrue) {
-                    //System.out.println("Still possible, only true");
-                    s.setNext(true);
-                    if(s.finish(model)){
-                        q.enqueue(s);
-                    }                
-                } else if (withFalse) {
-                    //System.out.println("Still possible, only false");
-                    s.setNext(false);
-                    if( s.finish(model)){
-                        q.enqueue(s); 
-                    }               
-                }
-            }
-        }
-        /*
-        for(int i=0; i< solutions.size(); i++){
-            
-            Solution theRealOne = new Solution(model.getWidth(), model.getHeight());
-
-            for(int j = 0; j< model.getWidth();j++){
-                for(int k=0; k< model.getHeight(); k++){
-
-                }
-            }
-        }
-        
-        return solutions;
-        */
     }
 
 
@@ -239,10 +165,6 @@ public class LightsOut {
         ArrayList<Solution> allSolutions = new ArrayList<Solution>();
         allSolutions = solve(model);
 
-        //System.out.println("ur mom");
-        //System.out.println(allSolutions);
-        //System.out.println(allSolutions.size());
-        //System.out.println("ur dad");
 
         int temp = 1000;
         int index = 0;

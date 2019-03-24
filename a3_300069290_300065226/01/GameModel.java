@@ -6,6 +6,10 @@ public class GameModel {
 
 	private boolean[][]gameBoard;
 
+	private int numberOfSteps = 0;
+
+	private Solution solution;
+
 	public GameModel(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -56,4 +60,5 @@ public class GameModel {
 
         return toreturn;
 	}
+
 }
