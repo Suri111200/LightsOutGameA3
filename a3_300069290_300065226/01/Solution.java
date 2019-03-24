@@ -125,20 +125,15 @@ public class Solution {
     }
 
     //A stupid experiment -- Friday 20:35
-
+    /*
     public void setNext(boolean nextValue, boolean incrementSetNext){
         if (incrementSetNext){
             setNext(nextValue);
         }else{
-            if(currentIndex >= width*height) {
-                System.out.println("Board already full");
-                return;
-                }
             board[currentIndex/width][currentIndex%width] = nextValue;
-        
         }
     }
-
+    */
     /** 
     * returns <b>true</b> if the solution 
     * has been entirely specified
@@ -173,6 +168,10 @@ public class Solution {
             System.out.println("Board already full");
             return;
         }
+        //Saturday, 03:55 -- Added this if statement
+        if (board[currentIndex/width][currentIndex%width] == true && nextValue == false)
+            numLeft++;
+
         board[currentIndex/width][currentIndex%width] = nextValue;
         currentIndex++;
         //System.out.println(currentIndex);
@@ -293,16 +292,79 @@ public class Solution {
     public boolean stillPossible(boolean nextValue, GameModel model) {
         
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(this);
+        //Solution duplicate = new Solution(this);
 
-        for (int i=0; i< model.getHeight(); i++){
-            for(int j=0; j< model.getWidth();j++){
-                duplicate.board[i][j] = model.isON(i,j);
-            }
+        //for (int i=0; i< model.getHeight(); i++){
+        //    for(int j=0; j< model.getWidth();j++){
+        //        duplicate.board[i][j] = model.isON(i,j);
+        //    }
+        //}
+
+        if(currentIndex >= width*height) {
+            System.out.println("Board already full");
+            return false;
         }
 
-        //Perform stillPossible with only boolean parameter (line ~232)
-        return duplicate.stillPossible(nextValue);
+        int i = currentIndex/width;
+        int j = currentIndex%width;
+        boolean before = board[i][j];
+        boolean possible = true;
+
+        board[i][j] = nextValue;
+        
+        if((i > 0) && (oddNeighborhood(i-1,j)!= model.isON(i-1,j))){
+            possible = false;
+        }
+        if(possible && (i == (height-1))) {
+            if((j > 0) && (oddNeighborhood(i,j-1)!= model.isON(i,j-1))){
+                possible = false;
+            }
+            if(possible && (j == (width-1))&& (oddNeighborhood(i,j)!= model.isON(i,j))){
+                possible = false;            
+            }
+        }
+        board[i][j] = before;
+        return possible;
+
+        //If a solution board square is in an odd neighbourhood,
+        //changing initial state of gamemodel square
+
+
+        //if in even neighbourhood
+        //not changing initial state
+        /*
+        int i = duplicate.currentIndex/width;
+        int j = duplicate.currentIndex%width;
+        boolean before = duplicate.board[i][j];
+        boolean possible = true;
+
+        duplicate.board[i][j] = nextValue;
+
+        if (i ==0){
+            return true;
+        }
+        else if ((i>0 && i<width*(height-1))||(i== width*(height-1)&& j==0)){
+            if (!(oddNeighbourhood(i-1,j)== model.isON(i-1,j)))
+                return true;
+            else
+                return false;
+        }
+        else if (())
+            //
+        if((i > 0) && (!oddNeighborhood(i-1,j))){
+            possible = false;
+        }
+        if(possible && (i == (height-1))) {
+            if((j > 0) && (!oddNeighborhood(i,j-1))){
+                possible = false;
+            }
+            if(possible && (j == (width-1))&& (!oddNeighborhood(i,j))){
+                possible = false;            
+            }
+        }
+        board[i][j] = before;
+        return possible;
+        */
     }
 
 
@@ -324,12 +386,12 @@ public class Solution {
         int i = currentIndex/width;
         int j = currentIndex%width;
         
-/*
+
         if(i == 0 && height > 1) {
             System.out.println("First line incomplete, can't proceed");
             return false;
         }
-*/
+
 
         while(currentIndex < height*width) {
             if(i < height - 1 ) {
@@ -382,16 +444,61 @@ public class Solution {
     public boolean finish(GameModel model){
 
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(this);
+        //Solution duplicate = new Solution(this);
 
-        for (int i=0; i< model.getHeight(); i++){
-            for(int j=0; j< model.getWidth();j++){
-                duplicate.board[i][j] = model.isON(i,j);
-            }
-        }
+        //for (int i=0; i< model.getHeight(); i++){
+        //    for(int j=0; j< model.getWidth();j++){
+        //        duplicate.board[i][j] = model.isON(i,j);
+        //    }
+        //}
 
         //Perform finish with 0 parameters.
-        return duplicate.finish();
+        //return duplicate.finish();
+
+        int i = currentIndex/width;
+        int j = currentIndex%width;
+        
+
+        if(i == 0 && height > 1) {
+            System.out.println("First line incomplete, can't proceed");
+            return false;
+        }
+
+
+        while(currentIndex < height*width) {
+            if(i < height - 1 ) {
+                setNext(oddNeighborhood(i-1,j)!= model.isON(i-1,j));
+                i = currentIndex/width;
+                j = currentIndex%width;
+            } else { //last raw
+                if(j == 0){
+                    setNext(oddNeighborhood(i-1,j)!= model.isON(i-1,j));
+                } else {
+                   if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1) && model.isON(i-1,j)!= model.isON(i,j-1)){
+                     return false;
+                   }
+                   setNext(oddNeighborhood(i,j-1)!= model.isON(i,j-1));
+                } 
+                i = currentIndex/width;
+                j = currentIndex%width;
+            }
+        }
+        if(oddNeighborhood(height-1,width-1)!= model.isON(height-1,width-1)){
+            return false;
+        }
+        // here we should return true because we could
+        // successfully finish the board. However, as a
+        // precaution, if someone called the method on
+        // a board that was unfinishable before calling
+        // the method, we do a complete check
+        
+        if(!isSuccessful()) {
+            System.out.println("Warning, method called incorrectly");
+            return false;
+        }
+       
+        return true;
+
     }
 
 
@@ -457,11 +564,6 @@ public class Solution {
         }
         out.append("]");
         return out.toString();
-    }
-
-    public boolean get(int i, int j)
-    {
-        return this.board[i][j] = true;
     }
 
 }
