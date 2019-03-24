@@ -126,8 +126,48 @@ public class LightsOut {
         Queue<Solution> q = new QueueImplementation<Solution>();
         ArrayList<Solution> solutions  = new ArrayList<Solution>();
 
-        Solution toAdd = new Solution (model.getWidth(), model.getHeight());
+        q.enqueue(new Solution(model.getWidth(),model.getHeight()));
+        long start = System.currentTimeMillis();
+        while(!q.isEmpty()){
+            Solution s  = q.dequeue();
+            if(s.isReady()){
+                // by construction, it is successfull
+                System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
+                solutions.add(s);
+            } else {
+                boolean withTrue = s.stillPossible(true, model);
+                boolean withFalse = s.stillPossible(false, model);
+                if(withTrue && withFalse) {
+                    Solution s2 = new Solution(s);
+                    s.setNext(true);
+                    q.enqueue(s);
+                    s2.setNext(false);
+                    q.enqueue(s2);
+                } else if (withTrue) {
+                    s.setNext(true);
+                    if(s.finish(model)){
+                        q.enqueue(s);
+                    }                
+                } else if (withFalse) {
+                    s.setNext(false);
+                    if( s.finish(model)){
+                        q.enqueue(s); 
+                    }               
+                }
+            }
+        }
+        return solutions;
 
+    /*
+
+        Queue<Solution> q = new QueueImplementation<Solution>();
+
+        ArrayList<Solution> solutions  = new ArrayList<Solution>();
+
+        Solution toAdd = new Solution (model.getWidth(), model.getHeight());
+        
+        //Saturday 15:04 -- This code probably isn't needed
+        /*
         for (int i=0; i< model.getHeight(); i++){
             for(int j=0; j< model.getWidth();j++){
                 toAdd.setNext(model.isON(i,j),false);
@@ -138,8 +178,6 @@ public class LightsOut {
         //System.out.println (toAdd);
         //System.out.println("\n"+toAdd+"\nUR MOM");
 
-        //Friday 20:44, Everything up until here should be fine. - Soorya
-        //Friday 21:10, Seems as though nothing between ~lines 150 and 175 is executed.
 
         q.enqueue(toAdd);
 
@@ -147,15 +185,15 @@ public class LightsOut {
         while(!q.isEmpty()){
             Solution s  = q.dequeue();
             
-            if(s.isReady()&& s.isSuccessful()){
+            if(s.isReady()){
                 //System.out.println("I think I'm ready!");
                 // by construction, it is successfull - The profs
                 // no it isn't. -Soorya
                 System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
                 solutions.add(s);
             } else {
-                boolean withTrue = s.stillPossible(true);
-                boolean withFalse = s.stillPossible(false);
+                boolean withTrue = s.stillPossible(true, model);
+                boolean withFalse = s.stillPossible(false, model);
                 //System.out.println("withtrue: "+withTrue+ "\n withfalse: "+withFalse);
                 if(withTrue && withFalse) {
                     //System.out.println("Still possible, both true and false.");
@@ -167,19 +205,32 @@ public class LightsOut {
                 } else if (withTrue) {
                     //System.out.println("Still possible, only true");
                     s.setNext(true);
-                    if(s.finish()){
+                    if(s.finish(model)){
                         q.enqueue(s);
                     }                
                 } else if (withFalse) {
                     //System.out.println("Still possible, only false");
                     s.setNext(false);
-                    if( s.finish()){
+                    if( s.finish(model)){
                         q.enqueue(s); 
                     }               
                 }
             }
         }
+        /*
+        for(int i=0; i< solutions.size(); i++){
+            
+            Solution theRealOne = new Solution(model.getWidth(), model.getHeight());
+
+            for(int j = 0; j< model.getWidth();j++){
+                for(int k=0; k< model.getHeight(); k++){
+
+                }
+            }
+        }
+        
         return solutions;
+        */
     }
 
 
