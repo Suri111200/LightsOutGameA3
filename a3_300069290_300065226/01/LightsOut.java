@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * The class <b>LightsOut</b> is the
  * class that implements the method to
- * computs solutions of the Lights Out game.
+ * compute solutions of the Lights Out game.
  * It contains the main of our application.
  *
  * @author Guy-Vincent Jourdan, University of Ottawa

@@ -4,6 +4,8 @@ public class GridButton extends JButton {
 
 
     // YOUR VARIABLES HERE
+    private boolean selected = false;
+    
 
 
     /**
@@ -57,4 +59,19 @@ public class GridButton extends JButton {
     }
 
     // YOUR OTHER METHODS HERE
+    private ImageIcon getImageIcon() {
+        int id;
+        if (selected) {
+            id = NUM_COLOURS + 1;
+        } else {
+            id = type;
+        }
+        if (icons[id] == null) {
+            String strId = Integer.toString(id);
+            icons[id] = new ImageIcon(Cell.class.getResource("/data/ball-"
+                + strId + ".png"));
+        }
+        return icons[id];
+    }
+
 }
