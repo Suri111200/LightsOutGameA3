@@ -444,7 +444,7 @@ public class Solution {
     public boolean finish(GameModel model){
 
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(this);
+        //Solution duplicate = new Solution(this);
 
         //for (int i=0; i< model.getHeight(); i++){
         //    for(int j=0; j< model.getWidth();j++){
@@ -453,7 +453,52 @@ public class Solution {
         //}
 
         //Perform finish with 0 parameters.
-        return duplicate.finish();
+        //return duplicate.finish();
+
+        int i = currentIndex/width;
+        int j = currentIndex%width;
+        
+
+        if(i == 0 && height > 1) {
+            System.out.println("First line incomplete, can't proceed");
+            return false;
+        }
+
+
+        while(currentIndex < height*width) {
+            if(i < height - 1 ) {
+                setNext(oddNeighborhood(i-1,j)!= model.isON(i-1,j));
+                i = currentIndex/width;
+                j = currentIndex%width;
+            } else { //last raw
+                if(j == 0){
+                    setNext(oddNeighborhood(i-1,j)!= model.isON(i-1,j));
+                } else {
+                   if((height > 1) && oddNeighborhood(i-1,j) != oddNeighborhood(i,j-1) && model.isON(i-1,j)!= model.isON(i,j-1)){
+                     return false;
+                   }
+                   setNext(oddNeighborhood(i,j-1)!= model.isON(i,j-1));
+                } 
+                i = currentIndex/width;
+                j = currentIndex%width;
+            }
+        }
+        if(oddNeighborhood(height-1,width-1)!= model.isON(height-1,width-1)){
+            return false;
+        }
+        // here we should return true because we could
+        // successfully finish the board. However, as a
+        // precaution, if someone called the method on
+        // a board that was unfinishable before calling
+        // the method, we do a complete check
+        
+        if(!isSuccessful()) {
+            System.out.println("Warning, method called incorrectly");
+            return false;
+        }
+       
+        return true;
+
     }
 
 
