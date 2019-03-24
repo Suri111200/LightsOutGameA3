@@ -292,14 +292,14 @@ public class Solution {
     public boolean stillPossible(boolean nextValue, GameModel model) {
         
         //Create a duplicate Solution, copy all information onto duplicate board
-        Solution duplicate = new Solution(this);
+        //Solution duplicate = new Solution(this);
 
         //for (int i=0; i< model.getHeight(); i++){
         //    for(int j=0; j< model.getWidth();j++){
         //        duplicate.board[i][j] = model.isON(i,j);
         //    }
         //}
-        /*
+
         if(currentIndex >= width*height) {
             System.out.println("Board already full");
             return false;
@@ -312,14 +312,14 @@ public class Solution {
 
         board[i][j] = nextValue;
         
-        if((i > 0) && (!(oddNeighborhood(i-1,j))){
+        if((i > 0) && (oddNeighborhood(i-1,j)!= model.isON(i-1,j))){
             possible = false;
         }
         if(possible && (i == (height-1))) {
-            if((j > 0) && (!oddNeighborhood(i,j-1))){
+            if((j > 0) && (oddNeighborhood(i,j-1)!= model.isON(i,j-1))){
                 possible = false;
             }
-            if(possible && (j == (width-1))&& (!oddNeighborhood(i,j))){
+            if(possible && (j == (width-1))&& (oddNeighborhood(i,j)!= model.isON(i,j))){
                 possible = false;            
             }
         }
@@ -332,7 +332,7 @@ public class Solution {
 
         //if in even neighbourhood
         //not changing initial state
-        
+        /*
         int i = duplicate.currentIndex/width;
         int j = duplicate.currentIndex%width;
         boolean before = duplicate.board[i][j];
@@ -364,6 +364,7 @@ public class Solution {
         }
         board[i][j] = before;
         return possible;
+        */
     }
 
 
