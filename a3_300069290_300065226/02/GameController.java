@@ -108,6 +108,8 @@ public class GameController implements ActionListener, ItemListener {
         numberOfViews++;
     }
     private void update() {
+
+        //May need to be updated.
         for (int i = 0; i < numberOfViews; i++) {
             views[i].update();
         }
