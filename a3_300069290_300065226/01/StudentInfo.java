@@ -17,9 +17,9 @@ public class StudentInfo {
 
         System.out.println("************************************************************");
         System.out.println("*                                                          *");
-        System.out.println("*                                                          *");
-        System.out.println("*                                                          *");
-        System.out.println("*                                                          *");
+        System.out.println("*                   Soorya Saravanapavan, Hrithik Shah     *");
+        System.out.println("*                   300069290, 300065226                   *");
+        System.out.println("*                      Section A                           *");
         System.out.println("************************************************************");
         System.out.println();
 

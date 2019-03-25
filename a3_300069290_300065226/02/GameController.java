@@ -19,9 +19,6 @@ public class GameController implements ActionListener, ItemListener {
     // YOUR VARIABLES HERE
     private GameModel model;
 
-    private View [] views;
-    private int numberOfViews;
-
     /**
      * Constructor used for initializing the controller. It creates the game's view 
      * and the game's model instances
@@ -33,13 +30,8 @@ public class GameController implements ActionListener, ItemListener {
      */
     public GameController(int width, int height) {
 
-        // YOUR CODE HERE
-        views = new View[2];
-        numberOfViews = 0;
         model = new GameModel(width, height);
-        register(new GraphicalView(model, this));
-        register(new TextView(model));
-        update();
+        view = new GameView(model, this);
     }
 
     /**
@@ -62,6 +54,11 @@ public class GameController implements ActionListener, ItemListener {
         if (e.getActionCommand().equals("random"))
         {
             model.randomize();
+        }
+
+        if (e.getActionCommand().equals("solution"))
+        {
+            model.setSolution();
         }
 
         if (e.getActionCommand().equals("quit"))
@@ -99,20 +96,8 @@ public class GameController implements ActionListener, ItemListener {
         return model;
     }
 
-    public View[] getViews() {
-        return views;
-    }
-
-    private void register(View view) {
-        views[numberOfViews] = view;
-        numberOfViews++;
-    }
     private void update() {
-
-        //May need to be updated.
-        for (int i = 0; i < numberOfViews; i++) {
-            views[i].update();
-        }
+        view.update()
     }
 
 }

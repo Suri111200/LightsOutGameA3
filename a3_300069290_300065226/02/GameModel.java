@@ -121,14 +121,15 @@ public class GameModel {
 		{
 			for (int j = 0; j < gameBoard[i].length; j++)
 	  		{
-	  			if (random = 1)
+	  			random = (int)(Math.random() * 2) + 1;
+	  			if (random == 1)
 	  				gameBoard[i][j] = true;
 	  			else
 	  				gameBoard[i][j] = false;
 			}
 		}
 
-		if (!(isSuccessful(this)))
+		if (LightsOut.solve(this)==0)
 			this.randomize();
 	}
 

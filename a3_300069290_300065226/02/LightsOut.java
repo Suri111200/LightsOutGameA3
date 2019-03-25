@@ -1,4 +1,3 @@
-
 // UPDATE THIS FILE AS REQUIRED
 
 
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 /**
  * The class <b>LightsOut</b> is the
  * class that implements the method to
- * computs solutions of the Lights Out game.
+ * compute solutions of the Lights Out game.
  * It contains the main of our application.
  *
  * @author Guy-Vincent Jourdan, University of Ottawa
@@ -56,7 +55,7 @@ public class LightsOut {
      */
     public static ArrayList<Solution> solve(int width, int height){
 
-        SolutionQueue q  = new ArrayListSolutionQueue();
+        Queue<Solution> q = new QueueImplementation<Solution>();
         ArrayList<Solution> solutions  = new ArrayList<Solution>();
 
         q.enqueue(new Solution(width,height));
@@ -123,20 +122,20 @@ public class LightsOut {
      */
     public static ArrayList<Solution> solve(GameModel model){
 
-        SolutionQueue q  = new ArrayListSolutionQueue();
+        Queue<Solution> q = new QueueImplementation<Solution>();
         ArrayList<Solution> solutions  = new ArrayList<Solution>();
 
-        q.enqueue(new Solution(model.getWidth(), model.getHeight()));
+        q.enqueue(new Solution(model.getWidth(),model.getHeight()));
         long start = System.currentTimeMillis();
         while(!q.isEmpty()){
             Solution s  = q.dequeue();
-            if(s.isReady()){
+            if(s.isReady() && s.isSuccessful(model)){
                 // by construction, it is successfull
                 System.out.println("Solution found in " + (System.currentTimeMillis()-start) + " ms" );
                 solutions.add(s);
             } else {
-                boolean withTrue = s.stillPossible(true);
-                boolean withFalse = s.stillPossible(false);
+                boolean withTrue = s.stillPossible(true, model);
+                boolean withFalse = s.stillPossible(false, model);
                 if(withTrue && withFalse) {
                     Solution s2 = new Solution(s);
                     s.setNext(true);
@@ -145,20 +144,45 @@ public class LightsOut {
                     q.enqueue(s2);
                 } else if (withTrue) {
                     s.setNext(true);
-                    if(s.finish()){
+                    if(s.finish(model)){
                         q.enqueue(s);
                     }                
                 } else if (withFalse) {
                     s.setNext(false);
-                    if( s.finish()){
+                    if( s.finish(model)){
                         q.enqueue(s); 
                     }               
                 }
             }
         }
         return solutions;
+
     }
 
+
+    public static Solution solveShortest (GameModel model) 
+    {
+        ArrayList<Solution> allSolutions = new ArrayList<Solution>();
+        allSolutions = solve(model);
+
+
+        int temp = 1000;
+        int index = 0;
+
+        for (int i = 0; i < allSolutions.size(); i++)
+        {
+            //System.out.println(allSolutions.get(i));
+            if (temp > allSolutions.get(i).getSize())
+            {
+                //System.out.println("this is currently the shortest solution.");
+                temp = allSolutions.get(i).getSize();
+                //System.out.println(temp);
+                index = i;
+            }
+        }
+
+        return ((allSolutions.get(index)));
+    }
 
     /**
      * <b>main</b> method  calls the method <b>solve</b> 
